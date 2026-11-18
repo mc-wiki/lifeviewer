@@ -33,11 +33,30 @@ bo3b3o$b3o2bo$2bo!</textarea
     </div>
 
     <script>
-      ;(() => {
-        const pattern = new URLSearchParams(location.search).get('pattern')
-        if (pattern)
-          document.querySelector('.viewer textarea').textContent = pattern
+      const textarea = document.querySelector('.viewer textarea')
+
+      const parentOrigin = (() => {
+        try {
+          return new URL(document.referrer).origin
+        } catch {
+          return null
+        }
       })()
+
+      window.addEventListener('message', (event) => {
+        if (event.source !== window.parent) return
+        if (parentOrigin !== null && event.origin !== parentOrigin) return
+        if (event.data?.type !== 'lifeviewer-pattern') return
+        if (typeof event.data.pattern !== 'string') return
+
+        textarea.value = event.data.pattern
+        textarea.textContent = event.data.pattern
+
+        if (typeof window.updateMe === 'function') window.updateMe(textarea)
+      })
+
+      if (window.parent !== window)
+        window.parent.postMessage({ type: 'lifeviewer-ready' }, '*')
     </script>
     <script src="lv-plugin.js"></script>
   </body>
