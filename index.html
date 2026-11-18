@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <meta name="LifeViewer" content="viewer textarea" />
+    <title>LifeViewer</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: transparent;
+      }
+
+      body {
+        overflow: hidden;
+      }
+
+      canvas {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="viewer">
+      <textarea style="display: none">
+x = 8, y = 3, rule = B3/S23
+bo3b3o$b3o2bo$2bo!</textarea
+      >
+      <canvas width="560" height="560"></canvas>
+    </div>
+
+    <script>
+      ;(() => {
+        const pattern = new URLSearchParams(location.search).get('pattern')
+        if (pattern)
+          document.querySelector('.viewer textarea').textContent = pattern
+      })()
+    </script>
+    <script src="lv-plugin.js"></script>
+  </body>
+</html>
